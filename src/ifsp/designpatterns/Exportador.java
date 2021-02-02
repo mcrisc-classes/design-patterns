@@ -3,13 +3,40 @@ package ifsp.designpatterns;
 import java.util.List;
 
 public class Exportador {
-	private void exportar(List<Imovel> imoveis) {
-		for (Imovel im : imoveis) {
-			System.out.printf("%s %d %d %.1f\n", 
-					im.getCategoria().toString(),
-					im.getDormitorios(),
-					im.getVagas(),
-					im.getArea());
+	private enum Formato {TEXTO_PURO, CSV, HTML};
+	
+	private void exportar(List<Imovel> imoveis, Formato formato) {
+		
+		switch (formato) {
+		case TEXTO_PURO:
+			for (Imovel im : imoveis) {
+				System.out.printf("%s %d %d %.1f\n", 
+						im.getCategoria().toString(),
+						im.getDormitorios(),
+						im.getVagas(),
+						im.getArea());
+			}
+			break;
+			
+		case CSV:
+			for (Imovel im : imoveis) {
+				System.out.printf("%s,%d,%d,%.1f\n", 
+						im.getCategoria().toString(),
+						im.getDormitorios(),
+						im.getVagas(),
+						im.getArea());
+			}			
+			break;
+			
+		case HTML:
+			for (Imovel im : imoveis) {
+				System.out.printf("<tr>\n\t<td>%s</td>\n\t<td>%d</td>\n\t<td>%d</td>\n\t<td>%.1f</td>\n</tr>\n", 
+						im.getCategoria().toString(),
+						im.getDormitorios(),
+						im.getVagas(),
+						im.getArea());
+			}			
+			break;
 		}
 	}
 	
@@ -25,6 +52,6 @@ public class Exportador {
 				);
 
 		Exportador exportador = new Exportador();
-		exportador.exportar(imoveis);		
+		exportador.exportar(imoveis, Formato.HTML);		
 	}
 }
